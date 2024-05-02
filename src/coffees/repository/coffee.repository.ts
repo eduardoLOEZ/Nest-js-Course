@@ -27,7 +27,7 @@ export class CoffeeRepository extends Repository<Coffee> {
   }
 
   public async findById(id: number): Promise<Coffee | null> {
-    return this.findOneBy({ id: id });
+    return this.findOne({ where: { id: +id }, relations: { flavors: true } });
   }
 
   public async store(coffeDTO: CreateCoffeeDto): Promise<Coffee> {
