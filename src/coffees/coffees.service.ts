@@ -4,6 +4,7 @@ import { UpdateCoffeeDto } from './dto/update-coffe.dto/update-coffe.dto';
 import { Flavor } from './entities/flavor.entity/flavor.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
+import { PaginationQueryDto } from './dto/pagination-query/pagination-query.dto';
 
 @Injectable()
 export class CoffeesService {
@@ -13,12 +14,15 @@ export class CoffeesService {
     private readonly flavorRepository: Repository<Flavor>,
   ) {}
 
-  async findAll() {
+  async findAll(paginationQuery: PaginationQueryDto) {
+    const { limit, offset } = paginationQuery;
     try {
       const coffees = await this.coffeRepository.find({
         relations: {
           flavors: true,
         },
+        skip: offset, //se salta ese coffee y muestra todos menos el primero por ejemplo
+        take: limit, //si colocamos 2, mostrara solo esos dos
       });
 
       return coffees;
