@@ -6,6 +6,7 @@ import {
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import { Flavor } from './flavor.entity/flavor.entity';
+import { IsOptional } from 'class-validator';
 
 @Entity() // sql table === 'coffee'
 export class Coffee {
@@ -17,6 +18,10 @@ export class Coffee {
 
   @Column()
   brand: string;
+
+  @IsOptional()
+  @Column({ nullable: true })
+  description: string;
 
   @JoinTable() // 👈 Join the 2 tables - only the OWNER-side does this
   @ManyToMany(
